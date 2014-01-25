@@ -1,4 +1,4 @@
-bender
-======
+dbot
+====
 
 IRC bot
