@@ -12,20 +12,9 @@ npm start # run bot
 
 ## Configuration
 
-dbot relies heavily on the [irc](https://www.npmjs.org/package/irc) node.js library, and hence uses its configuration structure.
-Create a `config.json` file at the application root as such :
+dbot relies heavily on the [irc](https://www.npmjs.org/package/irc) node.js library, and as such pretty much all of its configuration goes straight to it, with the exception of the `plugins` array (read on to learn more about these).
 
-```javascript
-{
-  // Basically any irc option
-  "debug": true
-  "server": "irc.freenode.net",
-  "channels": ["#ddd"],
-  "nick": "dbot",
-
-  "plugins": [] // Read on
-}
-```
+See the `config.json` file to strart tweaking the bot to your needs and desires.
 
 ## Plugins
 
