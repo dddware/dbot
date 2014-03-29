@@ -1,9 +1,10 @@
 var http = require('follow-redirects').http;
 
 module.exports = {
-  regex: /!dfill ([1-9][0-9]*)/,
+  description: 'Generates placeholder text as n lines of song lyrics',
+  regex: /^dfill ([1-9][0-9]*)$/,
 
-  callback: function(from, to, matches) {
+  callback: function(from, matches) {
     var bot = this
 
       , params = {

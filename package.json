@@ -20,6 +20,7 @@
   "dependencies": {
     "irc": "~0.3.6",
     "follow-redirects": "0.0.3",
-    "qs": "~0.6.6"
+    "qs": "~0.6.6",
+    "jsonfile": "~1.1.1"
   }
 }

@@ -1,57 +1,56 @@
 var irc = require('irc')
+  , jsonfile = require('jsonfile')
 
   , dbot = {
+      config: jsonfile.readFileSync('./config.json'),
       client: null,
       plugins: [],
 
-      // Bot config
-      // TODO: read this from a config file on init
-      config: {
-        server: 'irc.freenode.net',
-        channels: ['#ddd'],
-        nick: 'fdkgnrthrth'
-      },
-
       plug: function (plugin) {
-        this.plugins.push(plugin);
+        var p;
+
+        try {
+          //p = require('dbot-' + plugin); // TODO: plugins as external npm modules
+          p = require('./plugins/' + plugin);
+          this.plugins.push(p);
+        } catch (e) {
+          console.log('** ' + plugin + ' plugin was not found! **');
+        }
       },
 
-      match: function (from, to, message, regex, callback) {
+      match: function (from, message, regex, callback) {
         var matches = message.match(regex);
 
         if (matches) {
-          callback.call(this, from, to, matches);
+          callback.call(this, from, matches);
         }
       },
 
       init: function () {
         var bot = this;
 
-        // TODO: put this in config as well (will need to set plugins aside as separate repos)
-        // TODO: try ^ at the start of regexes
-        bot.plug(require('./plugins/dpaste'));
-        bot.plug(require('./plugins/dfill'));
+        bot.plug('list');
+        bot.plug('dpaste');
+        bot.plug('dfill');
 
         bot.client = new irc.Client(
           bot.config.server,
           bot.config.nick,
           {
-            channels: bot.config.channels/*,
-            debug: true*/
+            channels: bot.config.channels,
+            debug: bot.config.debug
           }
         );
 
         bot.client.addListener('error', function (message) {
-            console.log('error: ', message);
+          console.log('error: ', message);
         });
 
-        // Listen to channel messages
-        bot.client.addListener('message', function (from, to, message) {
-          if (to.indexOf('#') === 0) {
-            bot.plugins.forEach(function (plugin) {
-              bot.match(from, to, message, plugin.regex, plugin.callback);
-            });
-          }
+        // Listen to PMs
+        bot.client.addListener('pm', function (from, message) {
+          bot.plugins.forEach(function (plugin) {
+            bot.match(from, message, plugin.regex, plugin.callback);
+          });
         });
       }
     };

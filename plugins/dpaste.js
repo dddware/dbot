@@ -2,9 +2,10 @@ var http = require('follow-redirects').http
   , qs = require('qs');
 
 module.exports = {
-  regex: /!dpaste (.+)/,
+  description: 'Saves the given content and gives you an URL',
+  regex: /^dpaste (.+)$/,
 
-  callback: function(from, to, matches) {
+  callback: function(from, matches) {
     var bot = this
 
       , data = qs.stringify({
