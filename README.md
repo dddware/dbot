@@ -14,7 +14,7 @@ npm start # run bot
 
 dbot relies heavily on the [irc](https://www.npmjs.org/package/irc) node.js library, and as such pretty much all of its configuration goes straight to it, with the exception of the `plugins` array (read on to learn more about these).
 
-See the `config.json` file to strart tweaking the bot to your needs and desires.
+See the `config.json` file to start tweaking the bot to suit your needs and fulfill your desires.
 
 ## Plugins
 
