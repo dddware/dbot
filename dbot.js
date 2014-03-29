@@ -1,62 +1,43 @@
-var irc = require('irc'),
-    http = require('follow-redirects').http,
-    qs = require('qs'),
+var irc = require('irc')
 
-    dbot = {
+  , dbot = {
       client: null,
+      plugins: [],
 
       // Bot config
       // TODO: read this from a config file on init
       config: {
         server: 'irc.freenode.net',
         channels: ['#ddd'],
-        nick: 'dbot'
+        nick: 'fdkgnrthrth'
       },
 
-      // HTTP request parameters factories
-      http: {
-        dfill: function (amount) {
-          return {
-            host: 'www.dfill.cc',
-            port: 80,
-            method: 'GET',
-            path: '/api/' + amount
-          }
-        },
-
-        dpaste: function (length) {
-          return {
-            host: 'www.dpaste.cc',
-            port: 80,
-            method: 'POST',
-            path: '/paste/new',
-            headers: {
-              'User-Agent': 'curl',
-              'Content-Type': 'application/x-www-form-urlencoded',
-              'Content-Length': length
-            }
-          }
-        }    
+      plug: function (plugin) {
+        this.plugins.push(plugin);
       },
 
-      // Message matching handler
-      match: function (message, regex, callback) {
+      match: function (from, to, message, regex, callback) {
         var matches = message.match(regex);
 
         if (matches) {
-          callback(matches);
+          callback.call(this, from, to, matches);
         }
       },
 
-      // Main method
       init: function () {
         var bot = this;
+
+        // TODO: put this in config as well (will need to set plugins aside as separate repos)
+        // TODO: try ^ at the start of regexes
+        bot.plug(require('./plugins/dpaste'));
+        bot.plug(require('./plugins/dfill'));
 
         bot.client = new irc.Client(
           bot.config.server,
           bot.config.nick,
           {
-            channels: bot.config.channels
+            channels: bot.config.channels/*,
+            debug: true*/
           }
         );
 
@@ -67,46 +48,9 @@ var irc = require('irc'),
         // Listen to channel messages
         bot.client.addListener('message', function (from, to, message) {
           if (to.indexOf('#') === 0) {
-
-            // dfill
-            bot.match(message, /!dfill ([1-9][0-9]*)/, function (matches) {
-              http.request(bot.http.dfill(matches[1]), function (res) {
-                res.setEncoding('utf8');
-                var buffer = '';
-
-                res.on('data', function (chunk) {
-                  buffer += chunk;
-                });
-
-                res.on('end', function () {
-                  bot.client.say(from, JSON.parse(buffer).join(' '));
-                });
-              }).end();
+            bot.plugins.forEach(function (plugin) {
+              bot.match(from, to, message, plugin.regex, plugin.callback);
             });
-
-            // dpaste
-            bot.match(message, /!dpaste (.+)/, function (matches) {
-              var data = qs.stringify({
-                    paste: matches[1]
-                  }),
-
-                  req = http.request(bot.http.dpaste(data.length), function (res) {
-                    res.setEncoding('utf8');
-                    var buffer = '';
-
-                    res.on('data', function (chunk) {
-                      buffer += chunk;
-                    });
-
-                    res.on('end', function () {
-                      bot.client.say(from, buffer);
-                    });
-                  });
-
-              req.write(data);
-              req.end();
-            });
-
           }
         });
       }
