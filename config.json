@@ -1,8 +1,8 @@
 {
   "debug": true,
   "server": "irc.freenode.net",
-  "channels": ["#ddd"],
+  "channels": ["#dddware"],
   "nick": "dbot",
 
-  "plugins": ["dpaste", "dfill"]
+  "plugins": ["list", "dpaste", "dfill"]
 }
