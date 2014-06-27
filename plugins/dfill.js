@@ -23,7 +23,6 @@ module.exports = {
           });
 
           res.on('end', function () {
-            console.log('jhkhgu');
             bot.client.say(from, JSON.parse(buffer).join(' '));
           });
         });
