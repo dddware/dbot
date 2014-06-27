@@ -1,7 +1,7 @@
 dbot
 ====
 
-**dbot** is a node.js-powered IRC bot designed to provide command-line utilities available by shouting exclamation-point-prefixed orders at it.
+**dbot** is a node.js-powered IRC bot designed to provide command-line utilities available by PMing it.
 
 ## Setup
 
@@ -22,7 +22,7 @@ A plugin corresponds to a functionality the bot offers : it comprises a descript
 
 As for now, plugins are single-file modules living the `plugins/` directory. Support for `npm`-installed plugins (with autoloading via a name prefix) is on the way.
 
-A couple of plugins are included by default, check them out to roll out your own. These include the `list` plugin : just say `!list` to see everything else.
+A couple of plugins are included by default, check them out to roll out your own. These include the `list` plugin : PM that to the bot to see everything else.
 
 ## Usage
 
