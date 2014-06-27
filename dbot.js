@@ -29,8 +29,8 @@ var irc = require('irc')
       init: function () {
         var bot = this;
 
-        for (var i in config.plugins) {
-          bot.plug(config.plugins[i]);
+        for (var i in bot.config.plugins) {
+          bot.plug(bot.config.plugins[i]);
         }
 
         bot.client = new irc.Client(
