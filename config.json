@@ -4,5 +4,5 @@
   "channels": ["#dddware"],
   "nick": "dbot",
 
-  "plugins": ["list", "dpaste", "dfill"]
+  "plugins": ["list", "dpaste", "dfill", "html5"]
 }
