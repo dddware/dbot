@@ -29,9 +29,9 @@ var irc = require('irc')
       init: function () {
         var bot = this;
 
-        bot.plug('list');
-        bot.plug('dpaste');
-        bot.plug('dfill');
+        for (var i in config.plugins) {
+          bot.plug(config.plugins[i]);
+        }
 
         bot.client = new irc.Client(
           bot.config.server,
@@ -42,6 +42,7 @@ var irc = require('irc')
           }
         );
 
+        // Print errors to console
         bot.client.addListener('error', function (message) {
           console.log('error: ', message);
         });
