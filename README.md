@@ -17,10 +17,11 @@ npm test # run tests
 ```
 
 Tests require global installation of the [jasmine-async](ttps://www.npmjs.org/package/jasmine-async) package.
+This part has to move on the plugins' READMEs.
 
 ## Configuration
 
-dbot relies heavily on the [irc](https://www.npmjs.org/package/irc) package, and as such pretty much all of its configuration goes straight to it, with the exception of the `plugins` array (read on to learn more about these).
+dbot relies heavily on the [irc](https://www.npmjs.org/package/irc) package, and as such pretty much all of its configuration goes straight to it, with the exception of the `plugins` array (read on to learn more about these). Its only function is passing data around, hence the absence of tests for the bot itself.
 
 See the `config.json` file to start tweaking the bot to suit your needs and fulfill your desires.
 
