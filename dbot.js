@@ -1,5 +1,6 @@
 var irc = require('irc')
   , jsonfile = require('jsonfile')
+  , deferred = require('deferred')
 
   , dbot = {
       config: jsonfile.readFileSync('./config.json'),
@@ -18,11 +19,11 @@ var irc = require('irc')
         }
       },
 
-      match: function (from, message, regex, callback) {
+      match: function (message, regex, callback) {
         var matches = message.match(regex);
 
         if (matches) {
-          callback.call(this, from, matches);
+          return callback.call(this, matches);
         }
       },
 
@@ -50,7 +51,14 @@ var irc = require('irc')
         // Listen to PMs
         bot.client.addListener('pm', function (from, message) {
           bot.plugins.forEach(function (plugin) {
-            bot.match(from, message, plugin.regex, plugin.callback);
+            var response = bot.match(message, plugin.regex, plugin.callback);
+
+            if (deferred.isPromise(response)) {
+              response.then(function (result) {
+                console.log(result);
+                bot.client.say(result);
+              });
+            }
           });
         });
       }

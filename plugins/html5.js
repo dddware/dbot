@@ -1,11 +1,12 @@
-var http = require('http');
+var deferred = require('deferred')
+  , http = require('http');
 
 module.exports = {
   description: 'Checks support for given HTML5 feature(s)',
   regex: /^html5 (.+)$/,
 
-  callback: function(from, matches) {
-    var bot = this
+  callback: function(matches) {
+    var d = deferred()
 
       , browsers = {
           firefox: 'Firefox',
@@ -46,10 +47,11 @@ module.exports = {
               }
             }
 
-            bot.client.say(from, result);
+            d.resolve(result);
           });
         });
 
     req.end();
+    return d.promise;
   }
 };

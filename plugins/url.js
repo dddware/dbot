@@ -1,11 +1,12 @@
-var https = require('https');
+var deferred = require('deferred')
+  , https = require('https');
 
 module.exports = {
   description: 'Lists available plugins',
   regex: /^url (.+)$/,
 
   callback: function(from, matches) {
-    var bot = this
+    var d = deferred()
       , accessToken = "31d060a5ac7acc79e636d6fa2691b6355620407d"
 
       , params = {
@@ -27,12 +28,11 @@ module.exports = {
           });
 
           res.on('end', function () {
-            bot.client.say(from, JSON.parse(buffer).data.url);
-            //console.log(buffer, params.path);
+            d.resolve(JSON.parse(buffer).data.url);
           });
         });
 
     req.end();
+    return d.promise;
   }
 };
- 

@@ -1,12 +1,13 @@
-var http = require('follow-redirects').http
+var deferred = require('deferred')
+  , http = require('follow-redirects').http
   , qs = require('qs');
 
 module.exports = {
   description: 'Saves the given content and gives you an URL',
   regex: /^dpaste (.+)$/,
 
-  callback: function(from, matches) {
-    var bot = this
+  callback: function(matches) {
+    var d = deferred()
 
       , data = qs.stringify({
           paste: matches[1]
@@ -33,11 +34,13 @@ module.exports = {
           });
 
           res.on('end', function () {
-            bot.client.say(from, buffer);
+            d.resolve(buffer);
           });
         });
 
     req.write(data);
     req.end();
+
+    return d.promise;
   }
 };
