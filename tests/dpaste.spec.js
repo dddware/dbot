@@ -4,7 +4,8 @@ var AsyncSpec = require('jasmine-async')(jasmine)
 
 // Mock regex matches
 var testString = 'some dummy content'
-  , matches = ['', testString];
+  , matches = ['', testString]
+  , pattern = /http:\/\/dpaste\.cc\/paste\/([a-z0-9]{24})/;
 
 describe('dpaste', function () {
   var async = new AsyncSpec(this)
@@ -13,7 +14,7 @@ describe('dpaste', function () {
   async.it('should return a correct url', function (done) {
     dpaste.callback(matches).then(function (result) {
       asyncResult = result;
-      expect(asyncResult).toMatch(/http:\/\/dpaste\.cc\/paste\/([a-z0-9]{24})/);
+      expect(asyncResult).toMatch(pattern);
 
       done();
     });

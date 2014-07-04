@@ -4,10 +4,12 @@ var list = require('../plugins/list.js');
 list.plugins = [];
 list.plugins.push(list);
 
+var expectation = list.regex + ' ' + list.description;
+
 describe('list', function () {
   it('should retrieve plugin list', function () {
     list.callback().then(function (result) {
-      expect(result).toEqual(list.regex + ' ' + list.description);
+      expect(result).toEqual(expectation);
     });
   });
 });

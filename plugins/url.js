@@ -2,10 +2,10 @@ var deferred = require('deferred')
   , https = require('https');
 
 module.exports = {
-  description: 'Lists available plugins',
+  description: 'Shortens an URL with bit.ly',
   regex: /^url (.+)$/,
 
-  callback: function(from, matches) {
+  callback: function(matches) {
     var d = deferred()
       , accessToken = "31d060a5ac7acc79e636d6fa2691b6355620407d"
 
@@ -16,7 +16,10 @@ module.exports = {
           path: 
             '/v3/shorten?'
             + 'access_token=' + accessToken 
-            + '&longUrl=' + encodeURIComponent(matches[1])
+            + '&longUrl=' + encodeURIComponent(matches[1]),
+          headers: {
+            'User-Agent': 'curl'
+          }
         }
 
       , req = https.request(params, function (res) {

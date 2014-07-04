@@ -13,7 +13,7 @@ module.exports = {
           opera: 'Opera (desktop)',
           op_mob: 'Opera (mobile)',
           chrome: 'Chrome',
-          safari: 'Safari (desktop',
+          safari: 'Safari (desktop)',
           ios_saf: 'Safari (iOS)',
           ie: 'Internet Explorer'
         }
