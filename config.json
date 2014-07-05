@@ -2,7 +2,5 @@
   "debug": true,
   "server": "irc.freenode.net",
   "channels": ["#dddware"],
-  "nick": "dbot",
-
-  "plugins": ["list", "dpaste", "dfill", "html5", "url"]
+  "nick": "dbot"
 }
