@@ -1,6 +1,7 @@
 {
   "name": "dbot",
   "description": "IRC bot",
+  "version": "0.0.1",
   "main": "dbot.js",
   "scripts": {
     "start": "node dbot.js"
